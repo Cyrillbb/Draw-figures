@@ -1,11 +1,12 @@
-export class Circle {
+export class Ellipse {
 
     constructor(desc) {
         this.desc = desc;
         this.pntRegExp = /\[\d+, \d+\]/gm;
-        this.radRegExp = /-r \d+/gm;
-        console.log('>>> ', desc.match(this.radRegExp)[0].split(' ')[1])
-        this.radius = desc.match(this.radRegExp)[0].split(' ')[1]
+        this.rad1RegExp = /-r1 \d+/gm;
+        this.rad2RegExp = /-r2 \d+/gm;        
+        this.radius1 = desc.match(this.rad1RegExp)[0].split(' ')[1]
+        this.radius2 = desc.match(this.rad2RegExp)[0].split(' ')[1]
         this.coords = desc.match(this.pntRegExp).map(i => JSON.parse(i));
     }
 
@@ -21,10 +22,11 @@ export class Circle {
     draw() {
         const context = this.canvasElement.getContext('2d');
         context.strokeStyle = 'white'
-        console.log(this.radius)
-        context.arc(...this.coords[0], this.radius, 0, 2 * Math.PI)
+        context.beginPath();
+        console.log('/// ', ...this.coords[0], this.radius1, this.radius2)
+        context.ellipse(...this.coords[0], this.radius1, this.radius2, Math.PI , 0, 2 * Math.PI)
         context.stroke();
     }
 }
 
-//cirle -p [75, 75] -r 25 -c rgba (255, 0, 0, 0.8) -b rgba(255, 0, 0, 0.3)
+//ellipse -p [75, 75] -r1 50 -r2 25 -c rgb(0, 255, 0) -b rgba(255, 0, 0, 0.3)

@@ -15,7 +15,7 @@ export class Line {
     }
     draw() {
         const context = this.canvasElement.getContext('2d');
-        context.strokeStyle = 'white'
+        context.strokeStyle = 'rgba(0, 255, 0, 1)'
         context.beginPath();        
         context.moveTo(...this.coords[0]);
         context.lineTo(...this.coords[1]);

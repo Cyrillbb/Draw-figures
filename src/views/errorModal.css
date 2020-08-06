@@ -1,0 +1,30 @@
+.errorModal--hidden {
+    display: none;
+    transition: all 0.3s linear;
+}
+
+.errorModal {
+    display: block;
+    position: absolute;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.561);       
+    transition: all 0.3s linear;
+}
+
+.errorBlock {    
+    background-color: black;
+    padding: 15px;
+    border-radius: 10px;
+    width: 400px;
+    margin: 200px auto;
+}
+
+.errorBlock h3 {
+    margin: 5px;
+}
+
+.errorBlock button {
+    margin: 5px;
+}

@@ -4,32 +4,35 @@ export class State {
         this.acceptedFigures = ['line', 'rectangle', 'triangle', 'circle', 'ellipse'];
     }
     add(input) {
-        try {
-            const figureType = this.checkFigure(input);
-            const figureCoords = this.checkCoords(input, figureType);
-            this.figures.push({
-                figureType,
-                figureCoords,
-                id: this.figures.length
-            });
-            console.log(this.figures)
-        }
-        catch (err) {
-            console.log(err)
-        }
+        const figureType = this.checkFigure(input);
+        const figureCoords = this.checkCoords(input, figureType);
+        const options = this.checkOptions(input)
+        this.figures.push({
+            figureType,
+            figureCoords,
+            id: this.figures.length,
+            options: options ? options : undefined
+        });
+        console.log(this.figures)
+    }
+
+    removeLatest() {
+        this.figures.pop();
+        console.log(this.figures)
+    }
+
+    clearData() {
+        this.figures = [];
     }
 
     checkFigure(input) {
         const acceptedFigures = ['line', 'rectangle', 'triangle', 'circle', 'ellipse'];
-
         const figureType = input.split(' ')[0];
-
         if (acceptedFigures.includes(figureType)) return figureType;
-
         else throw new SyntaxError('Wrong figure type, check formatting help for more info');
     }
 
-    checkCoords(input, type) {
+    checkCoords(input, type) {        
         const lineCrdRegExp = /-p \[\d+, \d+\] \[\d+, \d+\]/gm;
         const rectCrdRegExp = /-p \[\d+, \d+\] \[\d+, \d+\]/gm;
         const triCrdRegExp = /-p \[\d+, \d+\] \[\d+, \d+\] \[\d+, \d+\]/gm;
@@ -73,14 +76,24 @@ export class State {
 
     checkOptions(input) {
         const optRegExp = /-c|-b/;
-        const colorRegExp = /-b ((rgb)a\((\d{1,3}?,\s?){3}(1|0?\.\d+)\)|(rgb)\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))/;
-        const bgColorRegExp = /-c ((rgb)a\((\d{1,3}?,\s?){3}(1|0?\.\d+)\)|(rgb)\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))/;
-        if (optRegExp.test(input) && colorRegExp.test(input) || bgColorRegExp.test(input)) {
-            console.log('>', [...input.match(colorRegExp), ...input.match(bgColorRegExp)])
-            return [...input.match(colorRegExp), ...input.match(bgColorRegExp)]
+        const colorRegExp = /-c rgb\(\d+, \d+, \d+\)|-c rgba\(\d+, \d+, \d+, 0.\d+\)/;
+        const bgColorRegExp = /-b rgb\(\d+, \d+, \d+\)|-b rgba\(\d+, \d+, \d+, 0.\d+\)/;
+        if (optRegExp.test(input) && colorRegExp.test(input) || bgColorRegExp.test(input)) {            
+            return {
+                color: input.match(colorRegExp) ? input.match(colorRegExp)[0].slice(3) : 'black',
+                bgColor: input.match(bgColorRegExp) ? input.match(bgColorRegExp)[0].slice(3) : 'black',
+            }
+        }
+        else if(!optRegExp.test(input)) {
+            return {
+                color: 'black',
+                bgColor: 'black'
+            }
         }
         else {
             throw new SyntaxError('Wrong option formatting, check formatting help for more info')
         }
     }
 }
+
+//rgb\(\d+, \d+, \d+\)|rgba\(\d+, \d+, \d+, 0.\d+\)

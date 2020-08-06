@@ -1,12 +1,18 @@
 export class State {
     constructor() {
-        this.state = [];
+        this.figures = [];
         this.acceptedFigures = ['line', 'rectangle', 'triangle', 'circle', 'ellipse'];
     }
     add(input) {
         try {
-            this.figureType = this.checkFigure(input);
-            this.figureCoords = this.checkCoords(input, this.figureType);
+            const figureType = this.checkFigure(input);
+            const figureCoords = this.checkCoords(input, figureType);
+            this.figures.push({
+                figureType,
+                figureCoords,
+                id: this.figures.length
+            });
+            console.log(this.figures)
         }
         catch (err) {
             console.log(err)
@@ -32,29 +38,49 @@ export class State {
 
         switch (true) {
             case (type === 'line' && lineCrdRegExp.test(input)): {
-                return input.match(lineCrdRegExp);
+                const pointsRegExp = /\[\d+, \d+\]/gm;
+                return input.match(pointsRegExp).map(i => JSON.parse(i));
             }
             case (type === 'rectangle' && rectCrdRegExp.test(input)): {
-                return input.match(rectCrdRegExp);
+                const pointsRegExp = /\[\d+, \d+\]/gm;
+                return input.match(pointsRegExp).map(i => JSON.parse(i));
             }
             case (type === 'triangle' && triCrdRegExp.test(input)): {
-                return input.match(triCrdRegExp);
+                const pointsRegExp = /\[\d+, \d+\]/gm;
+                return input.match(pointsRegExp).map(i => JSON.parse(i));
             }
             case (type === 'circle' && crclCrdRegExp.test(input)): {
-                return input.match(crclCrdRegExp);
+                const centerCoordsRegExp = /\[\d+, \d+\]/gm;
+                const radRegExp = /-r \d+/gm;
+                return {
+                    center: input.match(centerCoordsRegExp).map(i => JSON.parse(i))[0],
+                    radius: input.match(radRegExp)[0].split(' ')[1]
+                }
             }
             case (type === 'ellipse' && ellCrdRegExp.test(input)): {
-                return input.match(ellCrdRegExp);
+                const centerCoordsRegExp = /\[\d+, \d+\]/gm;
+                const rad1RegExp = /-r1 \d+/gm;
+                const rad2RegExp = /-r2 \d+/gm;
+                return {
+                    center: input.match(centerCoordsRegExp).map(i => JSON.parse(i))[0],
+                    radius1: input.match(rad1RegExp)[0].split(' ')[1],
+                    radius2: input.match(rad2RegExp)[0].split(' ')[1],
+                }
             }
             default: throw new SyntaxError('Wrong coordinates formatting, check formatting help for more info');
         }
     }
 
     checkOptions(input) {
+        const optRegExp = /-c|-b/;
         const colorRegExp = /-b ((rgb)a\((\d{1,3}?,\s?){3}(1|0?\.\d+)\)|(rgb)\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))/;
-        const bgColorRegExop = /-c ((rgb)a\((\d{1,3}?,\s?){3}(1|0?\.\d+)\)|(rgb)\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))/
+        const bgColorRegExp = /-c ((rgb)a\((\d{1,3}?,\s?){3}(1|0?\.\d+)\)|(rgb)\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))/;
+        if (optRegExp.test(input) && colorRegExp.test(input) || bgColorRegExp.test(input)) {
+            console.log('>', [...input.match(colorRegExp), ...input.match(bgColorRegExp)])
+            return [...input.match(colorRegExp), ...input.match(bgColorRegExp)]
+        }
+        else {
+            throw new SyntaxError('Wrong option formatting, check formatting help for more info')
+        }
     }
-
-};
-
-//((rgb)a\((\d{1,3}?,\s?){3}(1|0?\.\d+)\)|(rgb)\(\d{1,3}%?(,\s?\d{1,3}%?){2}\))
+}

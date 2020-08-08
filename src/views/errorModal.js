@@ -1,18 +1,18 @@
 import './errorModal.css'
 
-export class ErrorModal {
-    constructor() {
+export class ErrorModal {    
+    render() {
         this.app = document.getElementById('root');
         this.errorModal = document.createElement('div');
         this.errorModal.className = 'errorModal--hidden';
 
         this.errorBlock = document.createElement('div');
         this.errorBlock.className = 'errorBlock'
-        
+
         this.errorMessage = document.createElement('h3');
-        
+
         this.checkErrorBtn = document.createElement('button');
-        this.checkErrorBtn.innerText = 'Ok';        
+        this.checkErrorBtn.innerText = 'Ok';
 
         this.errorBlock.append(this.errorMessage, this.checkErrorBtn);
         this.errorModal.append(this.errorBlock)

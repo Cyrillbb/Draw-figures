@@ -5,7 +5,7 @@ export class Canvas {
         this.app = document.getElementById('root');
         this.canvasDiv = document.createElement('div');
         this.canvas = document.createElement('canvas');
-        this.canvas.width = '600';
+        this.canvas.width = '700';
         this.canvas.height = '600';
         this.canvas.className = 'canvas';
         this.canvasDiv.append(this.canvas);

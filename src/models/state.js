@@ -3,10 +3,11 @@ export class State {
         this.figures = [];
         this.acceptedFigures = ['line', 'rectangle', 'triangle', 'circle', 'ellipse'];
     }
-    add(input) {
-        const figureType = this.checkFigure(input);
-        const figureCoords = this.checkCoords(input, figureType);
-        const options = this.checkOptions(input)
+    //method for adding figures to the model
+    add(input, index) {
+        const figureType = this.checkFigure(input, index);
+        const figureCoords = this.checkCoords(input, figureType, index);
+        const options = this.checkOptions(input, index)
         this.figures.push({
             figureType,
             figureCoords,
@@ -15,41 +16,39 @@ export class State {
         });
         console.log(this.figures)
     }
-
+    //method for removing the last added model
     removeLatest() {
         this.figures.pop();
         console.log(this.figures)
     }
-
+    //method for clearing model data
     clearData() {
         this.figures = [];
     }
-
-    checkFigure(input) {
+    // figure type validator
+    checkFigure(input, index) {
         const acceptedFigures = ['line', 'rectangle', 'triangle', 'circle', 'ellipse'];
         const figureType = input.split(' ')[0];
         if (acceptedFigures.includes(figureType)) return figureType;
-        else throw new SyntaxError('Wrong figure type, check formatting help for more info');
+        else throw new SyntaxError(`Wrong figure type at line ${index}, check formatting help for more info`);
     }
-
-    checkCoords(input, type) {        
-        const lineCrdRegExp = /-p \[\d+, \d+\] \[\d+, \d+\]/gm;
-        const rectCrdRegExp = /-p \[\d+, \d+\] \[\d+, \d+\]/gm;
-        const triCrdRegExp = /-p \[\d+, \d+\] \[\d+, \d+\] \[\d+, \d+\]/gm;
-        const crclCrdRegExp = /-p \[\d+, \d+\] -r \d+/gm;
-        const ellCrdRegExp = /-p \[\d+, \d+\] -r1 \d+ -r2 \d+/gm;
+    //coordinates validator
+    checkCoords(input, type, index) {
+        const lineCrdRegExp = /-p (\[\d+, \d+\] |\[\d+, \d+\]){2}/;
+        const rectCrdRegExp = /-p (\[\d+, \d+\] |\[\d+, \d+\]){2}/;
+        const triCrdRegExp = /-p (\[\d+, \d+\] |\[\d+, \d+\]){3}/;
+        const crclCrdRegExp = /-p \[\d+, \d+\] -r \d+/;
+        const ellCrdRegExp = /-p \[\d+, \d+\] -r1 \d+ -r2 \d+/;
+        const pointsRegExp = /\[\d+, \d+\]/gm;
 
         switch (true) {
-            case (type === 'line' && lineCrdRegExp.test(input)): {
-                const pointsRegExp = /\[\d+, \d+\]/gm;
+            case (type === 'line' && lineCrdRegExp.test(input) && input.match(pointsRegExp).length === 2): {
                 return input.match(pointsRegExp).map(i => JSON.parse(i));
             }
-            case (type === 'rectangle' && rectCrdRegExp.test(input)): {
-                const pointsRegExp = /\[\d+, \d+\]/gm;
+            case (type === 'rectangle' && rectCrdRegExp.test(input) && input.match(pointsRegExp).length === 2): {
                 return input.match(pointsRegExp).map(i => JSON.parse(i));
             }
-            case (type === 'triangle' && triCrdRegExp.test(input)): {
-                const pointsRegExp = /\[\d+, \d+\]/gm;
+            case (type === 'triangle' && triCrdRegExp.test(input) && input.match(pointsRegExp).length === 3): {
                 return input.match(pointsRegExp).map(i => JSON.parse(i));
             }
             case (type === 'circle' && crclCrdRegExp.test(input)): {
@@ -70,30 +69,39 @@ export class State {
                     radius2: input.match(rad2RegExp)[0].split(' ')[1],
                 }
             }
-            default: throw new SyntaxError('Wrong coordinates formatting, check formatting help for more info');
+            default: throw new SyntaxError(`Wrong coordinates formatting at line ${index}, check formatting help for more info`);
         }
     }
-
-    checkOptions(input) {
-        const optRegExp = /-c|-b/;
+    // options validator
+    checkOptions(input, index) {
+        const optRegExp = /-c|-b/gm;
         const colorRegExp = /-c rgb\(\d+, \d+, \d+\)|-c rgba\(\d+, \d+, \d+, 0.\d+\)/;
         const bgColorRegExp = /-b rgb\(\d+, \d+, \d+\)|-b rgba\(\d+, \d+, \d+, 0.\d+\)/;
-        if (optRegExp.test(input) && colorRegExp.test(input) || bgColorRegExp.test(input)) {            
-            return {
-                color: input.match(colorRegExp) ? input.match(colorRegExp)[0].slice(3) : 'black',
-                bgColor: input.match(bgColorRegExp) ? input.match(bgColorRegExp)[0].slice(3) : 'black',
-            }
-        }
-        else if(!optRegExp.test(input)) {
+        const options = input.match(optRegExp).length;
+
+        if (!optRegExp.test(input)) {
             return {
                 color: 'black',
                 bgColor: 'black'
             }
         }
+        else if (options === 1 && (colorRegExp.test(input) || bgColorRegExp.test(input))) {
+            return {
+                color: input.match(colorRegExp) ? input.match(colorRegExp)[0].slice(3) : 'black',
+                bgColor: input.match(bgColorRegExp) ? input.match(bgColorRegExp)[0].slice(3) : 'black',
+            }
+        }
+        else if (options === 2 && colorRegExp.test(input) && bgColorRegExp.test(input)) {
+            return {
+                color: input.match(colorRegExp)[0].slice(3),
+                bgColor:  input.match(bgColorRegExp)[0].slice(3),
+            }
+        }
+        else if (options === 2 && (!colorRegExp.test(input) || !bgColorRegExp.test(input))) {
+            throw new SyntaxError(`Wrong option formatting at line ${index}, check formatting help for more info`);
+        }
         else {
-            throw new SyntaxError('Wrong option formatting, check formatting help for more info')
+            throw new SyntaxError(`Wrong option formatting at line ${index}, check formatting help for more info`);
         }
     }
 }
-
-//rgb\(\d+, \d+, \d+\)|rgba\(\d+, \d+, \d+, 0.\d+\)

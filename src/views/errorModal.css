@@ -9,13 +9,15 @@
     top: 0px;
     width: 100vw;
     height: 100vh;
+    color: rgb(214, 211, 211);
     background-color: rgba(0, 0, 0, 0.561);       
     transition: all 0.3s linear;
 }
 
 .errorBlock {    
-    background-color: black;
+    background-color: rgb(36, 34, 34);
     padding: 15px;
+    border: solid pink 5px;
     border-radius: 10px;
     width: 400px;
     margin: 200px auto;

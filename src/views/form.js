@@ -4,16 +4,16 @@ export class Form {
     render() {
         this.app = document.getElementById('root');
         this.formElement = document.createElement('form');
-
-        this.input = document.createElement('textarea');        
+        
+        this.input = document.createElement('textarea');
         this.input.className = 'inpt';
         this.input.required = true;
-        this.input.cols = 80;
+        this.input.cols = 74;
         this.input.rows = 5;
 
         this.submitBtn = document.createElement('button');
         this.submitBtn.type = 'submit';
-        this.submitBtn.innerText = 'submit';
+        this.submitBtn.innerText = 'Submit';
 
         this.removeLatestBtn = document.createElement('button');
         this.removeLatestBtn.type = 'button';
@@ -22,9 +22,14 @@ export class Form {
         this.resetCanvasBtn = document.createElement('button');
         this.resetCanvasBtn.type = 'button';
         this.resetCanvasBtn.innerText = 'Reset Canvas';
-        
+
+        this.showHelpBtn = document.createElement('button');
+        this.showHelpBtn.type = 'button';
+        this.showHelpBtn.innerText = 'Show formatting help';
+
+
         this.btnBlock = document.createElement('div');
-        this.btnBlock.append(this.submitBtn, this.removeLatestBtn, this.resetCanvasBtn);
+        this.btnBlock.append(this.submitBtn, this.removeLatestBtn, this.resetCanvasBtn, this.showHelpBtn);
 
         this.formElement.append(this.input, this.btnBlock);
         this.app.append(this.formElement);
@@ -34,7 +39,6 @@ export class Form {
         this.formElement.addEventListener('submit', event => {
             event.preventDefault();
             if (this.input.value) {
-                console.log(this.input.value.split('\n'))
                 handler(this.input.value);
                 this.input.value = ''
             }
@@ -49,6 +53,12 @@ export class Form {
 
     handleResetCanvas(handler) {
         this.resetCanvasBtn.addEventListener('click', () => {
+            handler();
+        })
+    }
+
+    handleShowHelp(handler) {
+        this.showHelpBtn.addEventListener('click', () => {
             handler();
         })
     }

@@ -11,13 +11,13 @@ export class Controller {
         this.canvas = canvas;
         this.errorModal = errorModal;
         this.helpWingow = helpWingow
-        
+
         //rendering views
         this.canvas.render();
         this.form.render();
         this.errorModal.render();
         this.helpWingow.render();
-        
+
         //initialising event listeners
         this.form.handleAddFigure(this.handleAddFigure);
         this.form.handleRemoveLast(this.handleRemoveLast);
@@ -26,14 +26,17 @@ export class Controller {
 
     }
 
-    handleAddFigure(input) {        
+    handleAddFigure(input) {
         try {
-            input.split('\n').forEach((figure, index) => this.model.add(figure, index + 1));
+            input.split('\n').forEach((figure, index) => {
+                if (figure !== '') this.model.add(figure, index + 1)
+            });
         }
-        catch (err) {            
+        catch (err) {
             this.errorModal.setErrorMessage(err.message)
         }
         finally {
+            this.canvas.clearCanvas();
             this.model.figures.length > 0 ?
                 this.model.figures.forEach(figure => this.canvas.draw(figure)) :
                 undefined

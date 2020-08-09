@@ -29,7 +29,7 @@ export class State {
     }
     // figure type validator
     checkFigure(input, index) {        
-        const figureType = input.split(' ')[0];
+        const figureType = input.trimStart().split(' ')[0];
         if (this.acceptedFigures.includes(figureType)) return figureType;
         else throw new SyntaxError(`Wrong figure type at line ${index}, check formatting help for more info`);
     }

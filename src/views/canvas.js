@@ -20,7 +20,7 @@ export class Canvas {
 
     clearCanvas() {
         const context = this.canvas.getContext('2d');
-        context.clearRect(0, 0, 600, 600);
+        context.clearRect(0, 0, 700, 600);
     }
 
     draw(figureData) {

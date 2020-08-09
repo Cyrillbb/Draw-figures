@@ -25,7 +25,7 @@ export class HelpWindow {
             'to draw a triangle you must supply three coordinates (points of triangle), example: \n triangle -p [50, 300] [50, 100] [300, 100]',
             'to draw a circle you must supply one coordinate (center) and a radius, example: \n circle -p [75, 75] -r 25',
             'to draw an ellipse you must supply one coordinate (center) and two radiuses, example: \n ellipse -p [75, 75] -r1 50 -r2 25',
-            'to draw a multiline you must supply two or more coordinates, example: \n multiline -p [50, 50] [400, 400], [600, 600]',
+            'to draw a multiline you must supply two or more coordinates, example: \n multiline -p [50, 50] [45, 400], [550, 500]',
             'to draw multiple figures at once enter instructions in acceptable format line by line',
             'canvas size is 700x600',
             'full example: triangle -p [50, 300] [50, 100] [300, 100] -c rgb(0, 0, 255) -b rgba(255, 0, 0, 0.3)'

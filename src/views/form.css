@@ -3,3 +3,8 @@
     border: solid pink 5px;
     border-radius: 3px;
 }
+
+.inputForm h3 {
+    margin: 8px;
+    font-weight: 100;
+}

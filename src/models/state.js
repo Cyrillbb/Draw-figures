@@ -1,22 +1,24 @@
 export class State {
     constructor() {
         this.figures = [];
-        this.acceptedFigures = ['line', 'rectangle', 'triangle', 'circle', 'ellipse'];
+        this.acceptedFigures = ['line', 'multiline', 'rectangle', 'triangle', 'circle', 'ellipse'];
     }
     //method for adding figures to the model
     add(input, index) {
         const figureType = this.checkFigure(input, index);
         const figureCoords = this.checkCoords(input, figureType, index);
-        const options = this.checkOptions(input, index)
+        const options = this.checkOptions(input, index);
+        const dashed = this.checkLineType(input);
         this.figures.push({
             figureType,
             figureCoords,
             id: this.figures.length,
-            options: options ? options : undefined
+            options: options ? options : undefined,
+            dashedLine: dashed,
         });
         console.log(this.figures)
     }
-    //method for removing the last added model
+    //method for removing the last added figure
     removeLatest() {
         this.figures.pop();
         console.log(this.figures)
@@ -26,10 +28,9 @@ export class State {
         this.figures = [];
     }
     // figure type validator
-    checkFigure(input, index) {
-        const acceptedFigures = ['line', 'rectangle', 'triangle', 'circle', 'ellipse'];
+    checkFigure(input, index) {        
         const figureType = input.split(' ')[0];
-        if (acceptedFigures.includes(figureType)) return figureType;
+        if (this.acceptedFigures.includes(figureType)) return figureType;
         else throw new SyntaxError(`Wrong figure type at line ${index}, check formatting help for more info`);
     }
     //coordinates validator
@@ -43,6 +44,9 @@ export class State {
 
         switch (true) {
             case (type === 'line' && lineCrdRegExp.test(input) && input.match(pointsRegExp).length === 2): {
+                return input.match(pointsRegExp).map(i => JSON.parse(i));
+            }
+            case (type === 'multiline' && lineCrdRegExp.test(input)): {
                 return input.match(pointsRegExp).map(i => JSON.parse(i));
             }
             case (type === 'rectangle' && rectCrdRegExp.test(input) && input.match(pointsRegExp).length === 2): {
@@ -75,9 +79,8 @@ export class State {
     // options validator
     checkOptions(input, index) {
         const optRegExp = /-c|-b/gm;
-        const colorRegExp = /-c rgb\(\d+, \d+, \d+\)|-c rgba\(\d+, \d+, \d+, 0.\d+\)/;
-        const bgColorRegExp = /-b rgb\(\d+, \d+, \d+\)|-b rgba\(\d+, \d+, \d+, 0.\d+\)/;
-        const options = input.match(optRegExp).length;
+        const colorRegExp = /-c rgb\(\d+, \d+, \d+\)|-c rgba\(\d+, \d+, \d+, (1\)|0?\.\d+\))|-c #[A-Fa-f0-9]{6}/;
+        const bgColorRegExp = /-b rgb\(\d+, \d+, \d+\)|-b rgba\(\d+, \d+, \d+, (1\)|0?\.\d+\))|-b #[A-Fa-f0-9]{6}/;        
 
         if (!optRegExp.test(input)) {
             return {
@@ -85,23 +88,28 @@ export class State {
                 bgColor: 'black'
             }
         }
-        else if (options === 1 && (colorRegExp.test(input) || bgColorRegExp.test(input))) {
+        else if (input.match(optRegExp).length === 1 && (colorRegExp.test(input) || bgColorRegExp.test(input))) {
             return {
                 color: input.match(colorRegExp) ? input.match(colorRegExp)[0].slice(3) : 'black',
                 bgColor: input.match(bgColorRegExp) ? input.match(bgColorRegExp)[0].slice(3) : 'black',
             }
         }
-        else if (options === 2 && colorRegExp.test(input) && bgColorRegExp.test(input)) {
+        else if (input.match(optRegExp).length === 2 && colorRegExp.test(input) && bgColorRegExp.test(input)) {
             return {
                 color: input.match(colorRegExp)[0].slice(3),
                 bgColor:  input.match(bgColorRegExp)[0].slice(3),
             }
         }
-        else if (options === 2 && (!colorRegExp.test(input) || !bgColorRegExp.test(input))) {
+        else if (input.match(optRegExp).length === 2 && (!colorRegExp.test(input) || !bgColorRegExp.test(input))) {
             throw new SyntaxError(`Wrong option formatting at line ${index}, check formatting help for more info`);
         }
         else {
             throw new SyntaxError(`Wrong option formatting at line ${index}, check formatting help for more info`);
         }
     }
-}
+    checkLineType(input) {
+        const lineTypeRegExp = /-dashed/;
+        if(lineTypeRegExp.test(input)) return true
+        else return false
+    }
+} 

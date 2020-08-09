@@ -1,6 +1,10 @@
 .canvas {
     background-color: white;
     border: solid pink 5px;
-    border-radius: 3px;
-    margin: 10px;    
+    border-radius: 3px;     
+}
+
+.canvasBlock h3 {
+    margin: 8px;
+    font-weight: 100;
 }

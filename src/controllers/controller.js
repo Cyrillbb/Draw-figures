@@ -11,11 +11,13 @@ export class Controller {
         this.canvas = canvas;
         this.errorModal = errorModal;
         this.helpWingow = helpWingow
+        
         //rendering views
         this.canvas.render();
         this.form.render();
         this.errorModal.render();
         this.helpWingow.render();
+        
         //initialising event listeners
         this.form.handleAddFigure(this.handleAddFigure);
         this.form.handleRemoveLast(this.handleRemoveLast);

@@ -4,12 +4,17 @@ export class Form {
     render() {
         this.app = document.getElementById('root');
         this.formElement = document.createElement('form');
-        
+        this.formElement.className = 'inputForm'
+
+        this.header = document.createElement('h3');
+        this.header.innerText = 'Input area';
+
         this.input = document.createElement('textarea');
         this.input.className = 'inpt';
         this.input.required = true;
         this.input.cols = 74;
         this.input.rows = 5;
+        this.input.placeholder = '...input, example: ellipse -p [75, 75] -r1 50 -r2 25 -c rgb(0, 255, 0) -b rgba(255, 0, 0, 0.3)'
 
         this.submitBtn = document.createElement('button');
         this.submitBtn.type = 'submit';
@@ -31,7 +36,7 @@ export class Form {
         this.btnBlock = document.createElement('div');
         this.btnBlock.append(this.submitBtn, this.removeLatestBtn, this.resetCanvasBtn, this.showHelpBtn);
 
-        this.formElement.append(this.input, this.btnBlock);
+        this.formElement.append(this.header, this.input, this.btnBlock);
         this.app.append(this.formElement);
     }
 

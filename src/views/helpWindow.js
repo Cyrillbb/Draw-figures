@@ -19,6 +19,7 @@ export class HelpWindow {
             'you can use rgb instead of rgba, for example: rgb(0-255, 0-255, 0-255)',
             'you can also use hex format to define colors, for example: #FF0000',
             '-c defines outline color, -b defines inner figure color',
+            'you can add -dashed option to make dashed line or outline, example: \n line -p [0, 0] [50, 50] -dashed',
             'to draw a line you must supply two coordinates (starting and ending points), example: \n line -p [0, 0] [50, 50]',
             'to draw a rectangle you must supply two coordinates (starting and ending points of diagonal), example: \n rectangle -p [0, 0] [50, 50]',
             'to draw a triangle you must supply three coordinates (points of triangle), example: \n triangle -p [50, 300] [50, 100] [300, 100]',

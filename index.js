@@ -7,4 +7,4 @@ import { Form } from './src/views/form';
 import { ErrorModal } from './src/views/errorModal';
 import { HelpWindow } from './src/views/helpWindow';
 
-const controller = new Controller(new State(), new Form(), new Canvas(), new ErrorModal(), new HelpWindow);
+const controller = new Controller(new State(), new Form(), new Canvas(), new ErrorModal(), new HelpWindow());

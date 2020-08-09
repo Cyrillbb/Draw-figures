@@ -72,8 +72,7 @@ export class Canvas {
                 context.beginPath();
                 context.moveTo(...figureData.figureCoords[0]);
                 context.lineTo(...figureData.figureCoords[1]);
-                context.lineTo(...figureData.figureCoords[2]);
-                // context.lineTo(...figureData.figureCoords[0]);
+                context.lineTo(...figureData.figureCoords[2]);                
                 context.closePath();
                 context.stroke();
                 context.fill();

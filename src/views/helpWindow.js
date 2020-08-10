@@ -28,7 +28,7 @@ export class HelpWindow {
             'to draw a multiline you must supply two or more coordinates, example: \n multiline -p [50, 50] [45, 400], [550, 500]',
             'to draw multiple figures at once enter instructions in acceptable format line by line',
             'canvas size is 700x600',
-            'canvas origin point is located in the top left corner, Y axis is pointed downward, and X axis is pointed to the left',
+            'canvas origin point is located in the top left corner, Y axis is pointed downward, and X axis is pointed to the right',
             'full example: triangle -p [50, 300] [50, 100] [300, 100] -c rgb(0, 0, 255) -b rgba(255, 0, 0, 0.3)'
         ]
 

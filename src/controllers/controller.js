@@ -10,7 +10,7 @@ export class Controller {
         this.form = form;
         this.canvas = canvas;
         this.errorModal = errorModal;
-        this.helpWingow = helpWingow
+        this.helpWingow = helpWingow;
 
         //rendering views
         this.canvas.render();

@@ -13,7 +13,7 @@ export class State {
             figureType,
             figureCoords,
             id: this.figures.length,
-            options: options ? options : undefined,
+            options: options,
             dashedLine: dashed,
         });
         console.log(this.figures)

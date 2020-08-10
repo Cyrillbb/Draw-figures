@@ -39,6 +39,7 @@ To draw a multiline you must supply two or more coordinates, example:
 "multiline -p [50, 50] [45, 400], [550, 500]".
 
 To draw multiple figures at once enter instructions in acceptable format line by line
+
 canvas size is 700x600.
 
 canvas origin point is located in the top left corner, Y axis is pointed downward, and X axis is pointed to the right.
